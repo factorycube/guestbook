@@ -20,7 +20,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor //의존성 자동 주입 어노테이션
 public class GuestbookServiceImpl implements GuestbookService {
 
-    private final GuestbookReposiitory reposiitory; //반드시 final로 선언
+    private final GuestbookReposiitory repository; //반드시 final로 선언
 
     @Override
     public Long register(GuestbookDTO dto) {
@@ -32,7 +32,7 @@ public class GuestbookServiceImpl implements GuestbookService {
 
         log.info(entity);
 
-        reposiitory.save(entity);
+        repository.save(entity);
 
         return entity.getGno();
     }
@@ -41,7 +41,7 @@ public class GuestbookServiceImpl implements GuestbookService {
     public PageResultDTO<GuestbookDTO, Guestbook> getList(PageRequestDTO requestDTO) {
 
         Pageable pageable = requestDTO.getPageable(Sort.by("gno").descending());
-        Page<Guestbook> result = reposiitory.findAll(pageable);
+        Page<Guestbook> result = repository.findAll(pageable);
         Function<Guestbook, GuestbookDTO> fn = (entity -> entityToDto(entity));
 
         return new PageResultDTO<>(result, fn);
@@ -49,8 +49,28 @@ public class GuestbookServiceImpl implements GuestbookService {
 
     @Override
     public GuestbookDTO read(Long gno) {
-        Optional<Guestbook> result = reposiitory.findById(gno);
+        Optional<Guestbook> result = repository.findById(gno);
         return result.isPresent() ? entityToDto(result.get()) : null;
+    }
+
+    @Override
+    public void remove(Long gno) {
+        repository.deleteById(gno);
+    }
+
+    @Override
+    public void modify(GuestbookDTO dto) {
+        // 업데이트 하는 항목은 "제목", "내용"
+
+        Optional<Guestbook> result = repository.findById(dto.getGno());
+
+        if (result.isPresent()) {
+            Guestbook entity = result.get();
+            entity.changeTitle(dto.getTitle());
+            entity.changeContent(dto.getContent());
+
+            repository.save(entity);
+        }
     }
 
 }

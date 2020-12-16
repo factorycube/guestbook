@@ -2,9 +2,10 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
+
     <th:block th:fragment="content">
 
-        <h1 class="mt-4">방명록 목록 페이지
+        <h1 class="mt-4">Guestbook List Page
             <!--등록 링크-->
             <span>
                 <a th:href="@{/guestbook/register}">
@@ -94,7 +95,9 @@
                 $(".modal").modal();
             }
         </script>
+
     </th:block>
+
 </th:block>
 
 </html>
