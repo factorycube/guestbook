@@ -1,3 +1,10 @@
+// 페이지 결과 처리 DTO(PageResultDTO)
+// JPA 를 이용하는 Repository 에서는 페이지 처리 결과를 Page<Entity> 타입으로 반환
+// Page<Entity>의 엔티티 객체들을 DTO 객체로 변환해서 자료구조로 담아 주어야 한다.
+// 화면 출력에 필요한 페이지 정보들을 구성
+// PageResultDTO 클래스는 다양한 곳에서 사용할 수 있도록 제네릭 타입을 이용해서 DTO 와 EN 이라는 타입을 지정
+// PageResultDTO 는 Page<Entity> 타입을 이용해서 생성할 수 있도록 생성자로 작성
+// Function<EN,DTO>는 엔티티 객체들을 DTO 로 변환해 주는 기능
 package org.zerock.guestbook.dto;
 import lombok.Data;
 import org.springframework.data.domain.Page;
