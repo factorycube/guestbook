@@ -19,19 +19,19 @@ import java.util.stream.IntStream;
 public class GuestbookRepositoryTests {
 
     @Autowired
-    private GuestbookReposiitory guestbookReposiitory;
+    private GuestbookRepository guestbookRepository;
     //300개의 더미데이터 생성
     @Test
     public void insertDummies() {
 
-        IntStream.rangeClosed(1,300).forEach(i -> {
+        IntStream.rangeClosed(1,10000).forEach(i -> {
 
             Guestbook guestbook = Guestbook.builder()
                     .title("Title..." + i)
                     .content("Content..." + i)
                     .writer("user" + (i % 10))
                     .build();
-            System.out.println(guestbookReposiitory.save(guestbook));
+            System.out.println(guestbookRepository.save(guestbook));
         });
     }
 
@@ -39,7 +39,7 @@ public class GuestbookRepositoryTests {
     @Test
     public void updateTest() {
 
-        Optional<Guestbook> result = guestbookReposiitory.findById(300L); //존재하는 번호로 테스트
+        Optional<Guestbook> result = guestbookRepository.findById(300L); //존재하는 번호로 테스트
 
         if(result.isPresent()) {
 
@@ -48,7 +48,7 @@ public class GuestbookRepositoryTests {
             guestbook.changeTitle("Changed Title...");
             guestbook.changeContent("Changed Content...");
 
-            guestbookReposiitory.save(guestbook);
+            guestbookRepository.save(guestbook);
         }
     }
 
@@ -62,7 +62,7 @@ public class GuestbookRepositoryTests {
         BooleanBuilder builder = new BooleanBuilder(); //2
         BooleanExpression expression = qGuestbook.title.contains(keyword); //3
         builder.and(expression);
-        Page<Guestbook> result = guestbookReposiitory.findAll(builder, pageable); //5
+        Page<Guestbook> result = guestbookRepository.findAll(builder, pageable); //5
 
         result.stream().forEach(guestbook -> {
             System.out.println(guestbook);
@@ -81,7 +81,7 @@ public class GuestbookRepositoryTests {
         BooleanExpression exAll = exTitle.or(exContent); // 1-----------------------
         builder.and(exAll); //2---------------
         builder.and(qGuestbook.gno.gt(0L)); // 3--------------
-        Page<Guestbook> result = guestbookReposiitory.findAll(builder, pageable);
+        Page<Guestbook> result = guestbookRepository.findAll(builder, pageable);
 
         result.stream().forEach(guestbook -> {
             System.out.println(guestbook);

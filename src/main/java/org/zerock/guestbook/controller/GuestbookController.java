@@ -83,8 +83,11 @@ public class GuestbookController {
         log.info("dto: " + dto);
 
         service.modify(dto);
+
         // 페이지 이동시 페이지정보, 글번호를 같이 넘김.
         redirectAttributes.addAttribute("page", requestDTO.getPage());
+        redirectAttributes.addAttribute("type", requestDTO.getType());
+        redirectAttributes.addAttribute("keyword", requestDTO.getKeyword());
         redirectAttributes.addAttribute("gno", dto.getGno());
 
         return "redirect:/guestbook/read";
